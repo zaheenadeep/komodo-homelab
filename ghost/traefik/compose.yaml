@@ -21,6 +21,8 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - traefik:/certs
+    env_file:
+      - .env
 
   whoami:
     image: "traefik/whoami"
