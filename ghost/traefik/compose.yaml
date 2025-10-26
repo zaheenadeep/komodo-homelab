@@ -34,8 +34,8 @@ services:
       - "traefik.http.routers.whoami.tls=true"
       - "traefik.http.routers.whoami.tls.certresolver=letsencrypt"
       - "traefik.http.services.whoami.loadbalancer.server.port=80"
-      - "traefik.http.routers.whoami.tls.domains[0].main=$(MAIN_DOMAIN)"
-      - "traefik.http.routers.whoami.tls.domains[0].sans=*.$(MAIN_DOMAIN)"
+      - "traefik.http.routers.whoami.tls.domains[0].main=${MAIN_DOMAIN}"
+      - "traefik.http.routers.whoami.tls.domains[0].sans=*.${MAIN_DOMAIN}"
 
 volumes:
   traefik:
