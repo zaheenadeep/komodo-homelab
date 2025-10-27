@@ -1,5 +1,6 @@
 api:
-  insecure: true
+  dashboard: true
+  debug: true
 
 entryPoints:
   web:
@@ -11,6 +12,9 @@ entryPoints:
           scheme: https
   websecure:
     address: ":443"
+
+serversTransport:
+  insecureSkipVerify: true
 
 providers:
   docker:
