@@ -20,9 +20,8 @@ services:
       - traefik.http.routers.traefik-secure.tls.domains[0].main=${MAIN_DOMAIN}
       - traefik.http.routers.traefik-secure.tls.domains[0].sans=*.${MAIN_DOMAIN}
     ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"
+      - 80:80
+      - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./configs/traefik.yml:/etc/traefik/traefik.yml:ro
