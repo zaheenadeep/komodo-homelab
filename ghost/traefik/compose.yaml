@@ -1,10 +1,24 @@
 services:
 
   traefik:
-    image: "traefik:v3.5"
-    container_name: "traefik"
+    image: traefik:v3.5
+    container_name: traefik
     command:
-      - "--certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}"
+      - --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.entrypoints=web
+      - traefik.http.routers.traefik.rule=Host(`traefik.${MAIN_DOMAIN}`)
+      - traefik.http.routers.traefik.middlewares=traefik-https-redirect
+      - traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
+      - traefik.http.routers.traefik-secure.entrypoints=websecure
+      - traefik.http.routers.traefik-secure.rule=Host(`traefik.${MAIN_DOMAIN}`)
+      - traefik.http.routers.traefik-secure.service=api@internal
+      - traefik.http.routers.traefik-secure.tls=true
+      - traefik.http.routers.traefik-secure.tls.certresolver=letsencrypt
+      - traefik.http.routers.traefik-secure.tls.domains[0].main=${MAIN_DOMAIN}
+      - traefik.http.routers.traefik-secure.tls.domains[0].sans=*.${MAIN_DOMAIN}
     ports:
       - "80:80"
       - "443:443"
@@ -19,14 +33,14 @@ services:
   whoami:
     image: "traefik/whoami"
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`whoami.${MAIN_DOMAIN}`)"
-      - "traefik.http.routers.whoami.entrypoints=websecure"
-      - "traefik.http.routers.whoami.tls=true"
-      - "traefik.http.routers.whoami.tls.certresolver=letsencrypt"
-      - "traefik.http.services.whoami.loadbalancer.server.port=80"
-      - "traefik.http.routers.whoami.tls.domains[0].main=${MAIN_DOMAIN}"
-      - "traefik.http.routers.whoami.tls.domains[0].sans=*.${MAIN_DOMAIN}"
+      - traefik.enable=true
+      - traefik.http.routers.whoami.rule=Host(`whoami.${MAIN_DOMAIN}`)
+      - traefik.http.routers.whoami.entrypoints=websecure
+      - traefik.http.routers.whoami.tls=true
+      - traefik.http.routers.whoami.tls.certresolver=letsencrypt
+      - traefik.http.services.whoami.loadbalancer.server.port=80
+      - traefik.http.routers.whoami.tls.domains[0].main=${MAIN_DOMAIN}
+      - traefik.http.routers.whoami.tls.domains[0].sans=*.${MAIN_DOMAIN}
 
 volumes:
   traefik:
