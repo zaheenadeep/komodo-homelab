@@ -43,3 +43,22 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      tailscale-n8n:
+    network_mode: service:tailscale-n8n
+
+  
+  tailscale-n8n:
+    image: tailscale/tailscale:stable
+    hostname: tailscale-n8n
+    environment:
+      - TS_AUTHKEY=${TAILSCALE_AUTHKEY}
+      - TS_EXTRA_ARGS=--advertise-tags=tag:container
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=false
+    volumes:
+      - ${PWD}/tailscale-n8n/state:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+    restart: unless-stopped
