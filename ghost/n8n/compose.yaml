@@ -34,8 +34,6 @@ services:
       - DB_POSTGRESDB_USER=${POSTGRES_NON_ROOT_USER}
       - DB_POSTGRESDB_PASSWORD=${POSTGRES_NON_ROOT_PASSWORD}
       - N8N_SECURE_COOKIE=false
-    ports:
-      - 5678:5678
     volumes:
       - n8n_storage:/home/node/.n8n
     depends_on:
@@ -60,4 +58,6 @@ services:
       - /dev/net/tun:/dev/net/tun
     cap_add:
       - net_admin
+    ports:
+      - 5678:5678
     restart: unless-stopped
