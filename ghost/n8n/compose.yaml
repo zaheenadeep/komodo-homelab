@@ -37,7 +37,13 @@ services:
       - DB_POSTGRESDB_DATABASE=${POSTGRES_DB}
       - DB_POSTGRESDB_USER=${POSTGRES_NON_ROOT_USER}
       - DB_POSTGRESDB_PASSWORD=${POSTGRES_NON_ROOT_PASSWORD}
-      - N8N_SECURE_COOKIE=false
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - N8N_HOST=n8n.${MAIN_DOMAIN}
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - WEBHOOK_URL=https://n8n.${MAIN_DOMAIN}/
+      - GENERIC_TIMEZONE=America/New_York
+      - TZ=America/New_York
     volumes:
       - n8n_storage:/home/node/.n8n
     links:
@@ -51,6 +57,15 @@ services:
       - traefik.http.services.n8n.loadbalancer.server.port=5678
       - traefik.http.routers.n8n.tls.domains[0].main=${MAIN_DOMAIN}
       - traefik.http.routers.n8n.tls.domains[0].sans=*.${MAIN_DOMAIN}
+      - traefik.http.middlewares.n8n.headers.SSLRedirect=true
+      - traefik.http.middlewares.n8n.headers.STSSeconds=315360000
+      - traefik.http.middlewares.n8n.headers.browserXSSFilter=true
+      - traefik.http.middlewares.n8n.headers.contentTypeNosniff=true
+      - traefik.http.middlewares.n8n.headers.forceSTSHeader=true
+      - traefik.http.middlewares.n8n.headers.SSLHost=${MAIN_DOMAIN}
+      - traefik.http.middlewares.n8n.headers.STSIncludeSubdomains=true
+      - traefik.http.middlewares.n8n.headers.STSPreload=true
+      - traefik.http.routers.n8n.middlewares=n8n@docker
     depends_on:
       postgres:
         condition: service_healthy
