@@ -1,5 +1,9 @@
 version: '3.8'
 
+networks:
+  traefiknet:
+    external: true
+
 volumes:
   db_storage:
   n8n_storage:
@@ -54,7 +58,6 @@ services:
       - traefiknet
     expose:
       - 5678
-
   
   tailscale-n8n:
     image: tailscale/tailscale:stable
