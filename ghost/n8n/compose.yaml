@@ -58,8 +58,6 @@ services:
       #   condition: service_started
     networks:
       - traefiknet
-    expose:
-      - 5678
   
   # tailscale-n8n:
   #   image: tailscale/tailscale:stable
