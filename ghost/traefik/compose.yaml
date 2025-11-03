@@ -22,6 +22,8 @@ services:
     ports:
       - 80:80
       - 443:443
+    networks:
+      - traefiknet
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./configs/traefik.yml:/etc/traefik/traefik.yml:ro
@@ -40,6 +42,8 @@ services:
       - traefik.http.services.whoami.loadbalancer.server.port=80
       - traefik.http.routers.whoami.tls.domains[0].main=${MAIN_DOMAIN}
       - traefik.http.routers.whoami.tls.domains[0].sans=*.${MAIN_DOMAIN}
+    networks:
+      - traefiknet
 
 volumes:
   traefik:
