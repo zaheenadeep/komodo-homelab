@@ -40,6 +40,8 @@ services:
       - N8N_SECURE_COOKIE=false
     volumes:
       - n8n_storage:/home/node/.n8n
+    links:
+      - postgres
     labels:
       - traefik.enable=true
       - traefik.http.routers.n8n.rule=Host(`n8n.${MAIN_DOMAIN}`)
