@@ -43,6 +43,7 @@ services:
         condition: service_started
     network_mode: service:tailscale-n8n
 
+  
   tailscale-n8n:
     image: tailscale/tailscale:stable
     hostname: tailscale-n8n
@@ -59,13 +60,4 @@ services:
       - net_admin
     ports:
       - 5678:5678
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.tailscale-n8n.rule=Host(`tailscale-n8n.${TAILSCALE_DOMAIN}`)
-      - traefik.http.routers.tailscale-n8n.entrypoints=websecure
-      - traefik.http.routers.tailscale-n8n.tls=true
-      - traefik.http.routers.tailscale-n8n.tls.certresolver=letsencrypt
-      - traefik.http.services.tailscale-n8n.loadbalancer.server.port=5678
-      - traefik.http.routers.tailscale-n8n.tls.domains[0].main=${MAIN_DOMAIN}
-      - traefik.http.routers.tailscale-n8n.tls.domains[0].sans=*.${MAIN_DOMAIN}
     restart: unless-stopped
