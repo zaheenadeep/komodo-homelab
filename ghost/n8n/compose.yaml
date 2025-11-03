@@ -89,6 +89,8 @@ services:
       - /dev/net/tun:/dev/net/tun
     cap_add:
       - net_admin
+    networks:
+      - traefiknet
     restart: unless-stopped
     depends_on:
       n8n:
