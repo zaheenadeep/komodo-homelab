@@ -5,7 +5,7 @@ services:
     image: tailscale/tailscale:latest
     hostname: tailscale
     environment:
-      # - TS_EXTRA_ARGS=--advertise-tags=tag:container
+      - TS_EXTRA_ARGS=--advertise-exit-node
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_USERSPACE=false
     env_file:
