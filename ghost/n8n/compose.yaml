@@ -44,6 +44,7 @@ services:
       postgres:
         condition: service_healthy
       tailscale-n8n:
+        condition: service_started
     network_mode: service:tailscale-n8n
 
   
