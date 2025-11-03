@@ -57,6 +57,7 @@ services:
       # tailscale-n8n:
       #   condition: service_started
     networks:
+      - default
       - traefiknet
   
   # tailscale-n8n:
