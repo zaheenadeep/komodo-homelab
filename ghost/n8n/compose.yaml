@@ -78,9 +78,11 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    networks:
-      - default
-      - traefiknet
+    # networks:
+    #   - default
+    #   - traefiknet
+    ports:
+      - 5678:5678
   
   # tailscale-n8n:
   #   image: tailscale/tailscale:stable
