@@ -76,8 +76,6 @@ services:
     networks:
       - default
       - traefiknet
-    ports:
-      - "127.0.0.1:5678:5678"
   
   # tailscale-n8n:
   #   image: tailscale/tailscale:stable
