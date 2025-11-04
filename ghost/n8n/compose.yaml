@@ -41,6 +41,10 @@ services:
       - N8N_HOST=n8n.${MAIN_DOMAIN}
       - N8N_PORT=5678
       - N8N_PROTOCOL=https
+      - N8N_DIAGNOSTICS_ENABLED=false
+      - N8N_VERSION_NOTIFICATIONS_ENABLED=false
+      - N8N_TEMPLATES_ENABLED=false
+      - N8N_PERSONALIZATION_ENABLED=false
       - WEBHOOK_URL=https://n8n.${MAIN_DOMAIN}/
       - GENERIC_TIMEZONE=America/New_York
       - TZ=America/New_York
@@ -82,9 +86,14 @@ services:
       - TS_AUTHKEY=${TAILSCALE_AUTHKEY}
       - TS_EXTRA_ARGS=--advertise-tags=tag:container
       - TS_STATE_DIR=/var/lib/tailscale
-      - TS_USERSPACE=true
+      - TS_USERSPACE=false
     volumes:
       - ${PWD}/tailscale-n8n/state:/var/lib/tailscale
     devices:
       - /dev/net/tun:/dev/net/tun
+    networks:
+      - default
+      - traefiknet
+    cap_add:
+      - NET_ADMIN
     restart: unless-stopped
