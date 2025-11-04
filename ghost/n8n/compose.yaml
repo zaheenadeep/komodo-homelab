@@ -73,23 +73,23 @@ services:
       - default
       - traefiknet
   
-  tailscale-n8n:
-    image: tailscale/tailscale:stable
-    hostname: tailscale-n8n
-    environment:
-      - TS_AUTHKEY=${TAILSCALE_AUTHKEY}
-      - TS_EXTRA_ARGS=--advertise-tags=tag:container
-      - TS_STATE_DIR=/var/lib/tailscale
-      - TS_USERSPACE=false
-      - TS_SERVE_CONFIG=/config/serve.json
-    volumes:
-      - ${PWD}/tailscale-n8n/state:/var/lib/tailscale
-      - /mnt/ssd/docker-configs/tailscale-n8n/config:/config
-    devices:
-      - /dev/net/tun:/dev/net/tun
-    networks:
-      - default
-      - traefiknet
-    cap_add:
-      - NET_ADMIN
-    restart: unless-stopped
+  # tailscale-n8n:
+  #   image: tailscale/tailscale:stable
+  #   hostname: tailscale-n8n
+  #   environment:
+  #     - TS_AUTHKEY=${TAILSCALE_AUTHKEY}
+  #     - TS_EXTRA_ARGS=--advertise-tags=tag:container
+  #     - TS_STATE_DIR=/var/lib/tailscale
+  #     - TS_USERSPACE=false
+  #     - TS_SERVE_CONFIG=/config/serve.json
+  #   volumes:
+  #     - ${PWD}/tailscale-n8n/state:/var/lib/tailscale
+  #     - /mnt/ssd/docker-configs/tailscale-n8n/config:/config
+  #   devices:
+  #     - /dev/net/tun:/dev/net/tun
+  #   networks:
+  #     - default
+  #     - traefiknet
+  #   cap_add:
+  #     - NET_ADMIN
+  #   restart: unless-stopped
