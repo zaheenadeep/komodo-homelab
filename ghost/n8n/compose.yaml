@@ -57,7 +57,7 @@ services:
       - traefik.http.services.n8n.loadbalancer.server.port=5678
       - traefik.http.routers.n8n.tls.domains[0].main=${MAIN_DOMAIN}
       - traefik.http.routers.n8n.tls.domains[0].sans=*.${MAIN_DOMAIN}
-      - traefik.http.middlewares.n8nmwr.headers.SSLRedirect=true
+      # - traefik.http.middlewares.n8nmwr.headers.SSLRedirect=true
       # - traefik.http.middlewares.n8nmwr.headers.STSSeconds=315360000
       - traefik.http.middlewares.n8nmwr.headers.browserXSSFilter=true
       - traefik.http.middlewares.n8nmwr.headers.contentTypeNosniff=true
