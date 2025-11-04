@@ -75,6 +75,7 @@ services:
       postgres:
         condition: service_healthy
     networks:
+      - default
       - traefiknet
   
   # tailscale-n8n:
