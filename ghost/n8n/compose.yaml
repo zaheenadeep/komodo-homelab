@@ -66,11 +66,6 @@ services:
       - traefik.http.middlewares.n8nmwr.headers.STSIncludeSubdomains=true
       # - traefik.http.middlewares.n8nmwr.headers.STSPreload=true
       - traefik.http.routers.n8n.middlewares=n8nmwr@docker
-# # temp
-#       - traefik.http.services.n8n.loadbalancer.server.scheme=http
-#       - traefik.http.services.n8n.loadbalancer.passhostheader=true
-#       - traefik.http.services.n8n.loadbalancer.responseforwardingtimeouts.dialtimeout=60s
-#       - traefik.http.services.n8n.loadbalancer.responseforwardingtimeouts.responseheadertimeout=60s
     depends_on:
       postgres:
         condition: service_healthy
@@ -78,21 +73,21 @@ services:
       - default
       - traefiknet
   
-  # tailscale-n8n:
-  #   image: tailscale/tailscale:stable
-  #   hostname: tailscale-n8n
-  #   environment:
-  #     - TS_AUTHKEY=${TAILSCALE_AUTHKEY}
-  #     - TS_EXTRA_ARGS=--advertise-tags=tag:container
-  #     - TS_STATE_DIR=/var/lib/tailscale
-  #     - TS_USERSPACE=false
-  #   volumes:
-  #     - ${PWD}/tailscale-n8n/state:/var/lib/tailscale
-  #   devices:
-  #     - /dev/net/tun:/dev/net/tun
-  #   networks:
-  #     - default
-  #     - traefiknet
-  #   cap_add:
-  #     - NET_ADMIN
-  #   restart: unless-stopped
+  tailscale-n8n:
+    image: tailscale/tailscale:stable
+    hostname: tailscale-n8n
+    environment:
+      - TS_AUTHKEY=${TAILSCALE_AUTHKEY}
+      - TS_EXTRA_ARGS=--advertise-tags=tag:container
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=false
+    volumes:
+      - ${PWD}/tailscale-n8n/state:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    networks:
+      - default
+      - traefiknet
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
