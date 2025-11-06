@@ -22,7 +22,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-    network_mode: service:tailscale-n8n
+    network_mode: service:n8n
 
   n8n:
     image: docker.n8n.io/n8nio/n8n
