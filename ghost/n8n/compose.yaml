@@ -90,8 +90,7 @@ services:
       - traefik.http.routers.tailscale-n8n.tls.domains[0].main=${TAILSCALE_SUBDOMAIN}.${TAILSCALE_DOMAIN}
     devices:
       - /dev/net/tun:/dev/net/tun
-    networks:
-      - traefiknet
+    network_mode: host
     cap_add:
       - net_admin
       - sys_module
