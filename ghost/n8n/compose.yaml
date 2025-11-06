@@ -93,5 +93,6 @@ services:
       - net_admin
       # - sys_module
     networks:
+      - default
       - traefiknet
     restart: unless-stopped
