@@ -37,40 +37,21 @@ services:
       - N8N_HOST=${TAILSCALE_SUBDOMAIN}.${TAILSCALE_DOMAIN}
       - N8N_PORT=5678
       - N8N_PROTOCOL=https
-      # - N8N_LISTEN_ADDRESS=0.0.0.0
-      # - N8N_DIAGNOSTICS_ENABLED=false
-      # - N8N_VERSION_NOTIFICATIONS_ENABLED=false
-      # - N8N_TEMPLATES_ENABLED=false
-      # - N8N_PERSONALIZATION_ENABLED=false
+      - N8N_DIAGNOSTICS_ENABLED=false
+      - N8N_VERSION_NOTIFICATIONS_ENABLED=false
+      - N8N_TEMPLATES_ENABLED=false
+      - N8N_PERSONALIZATION_ENABLED=false
       - WEBHOOK_URL=https://${TAILSCALE_SUBDOMAIN}.${TAILSCALE_DOMAIN}/
       - GENERIC_TIMEZONE=America/New_York
       - TZ=America/New_York
     volumes:
       - /mnt/ssd/docker-configs/n8n:/home/node/.n8n
-    # labels:
-    #   - traefik.enable=true
-    #   - traefik.http.routers.n8n.rule=Host(`${TAILSCALE_SUBDOMAIN}.${TAILSCALE_DOMAIN}`)
-    #   - traefik.http.routers.n8n.entrypoints=websecure
-    #   - traefik.http.routers.n8n.tls=true
-    #   - traefik.http.services.n8n.loadbalancer.server.port=5678
-    #   - traefik.http.middlewares.n8nmwr.headers.SSLRedirect=true
-    #   - traefik.http.middlewares.n8nmwr.headers.STSSeconds=315360000
-    #   - traefik.http.middlewares.n8nmwr.headers.browserXSSFilter=true
-    #   - traefik.http.middlewares.n8nmwr.headers.contentTypeNosniff=true
-    #   - traefik.http.middlewares.n8nmwr.headers.forceSTSHeader=true
-    #   - traefik.http.middlewares.n8nmwr.headers.SSLHost=${TAILSCALE_DOMAIN}
-    #   - traefik.http.middlewares.n8nmwr.headers.STSIncludeSubdomains=true
-    #   - traefik.http.middlewares.n8nmwr.headers.STSPreload=true
-    #   - traefik.http.routers.n8n.middlewares=n8nmwr@docker
     depends_on:
       postgres:
         condition: service_healthy
-    # ports:
-    #   - 5678:5678
+      tailscale-n8n:
+        condition: service_started
     network_mode: service:tailscale-n8n
-    # networks:
-    #   - default
-    #   - traefiknet
   
   tailscale-n8n:
     image: tailscale/tailscale:stable
@@ -91,7 +72,6 @@ services:
       - /dev/net/tun:/dev/net/tun
     cap_add:
       - net_admin
-      # - sys_module
     networks:
       - default
       - traefiknet
