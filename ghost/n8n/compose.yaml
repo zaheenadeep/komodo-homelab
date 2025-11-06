@@ -34,15 +34,15 @@ services:
       - DB_POSTGRESDB_USER=${POSTGRES_NON_ROOT_USER}
       - DB_POSTGRESDB_PASSWORD=${POSTGRES_NON_ROOT_PASSWORD}
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
-      # - N8N_HOST=n8n.${MAIN_DOMAIN}
+      - N8N_HOST=${TAILSCALE_SUBDOMAIN}.${TAILSCALE_DOMAIN}
       - N8N_PORT=5678
-      # - N8N_PROTOCOL=https
-      - N8N_LISTEN_ADDRESS=0.0.0.0
-      - N8N_DIAGNOSTICS_ENABLED=false
-      - N8N_VERSION_NOTIFICATIONS_ENABLED=false
-      - N8N_TEMPLATES_ENABLED=false
-      - N8N_PERSONALIZATION_ENABLED=false
-      # - WEBHOOK_URL=https://n8n.${MAIN_DOMAIN}/
+      - N8N_PROTOCOL=https
+      # - N8N_LISTEN_ADDRESS=0.0.0.0
+      # - N8N_DIAGNOSTICS_ENABLED=false
+      # - N8N_VERSION_NOTIFICATIONS_ENABLED=false
+      # - N8N_TEMPLATES_ENABLED=false
+      # - N8N_PERSONALIZATION_ENABLED=false
+      - WEBHOOK_URL=https://${TAILSCALE_SUBDOMAIN}.${TAILSCALE_DOMAIN}/
       - GENERIC_TIMEZONE=America/New_York
       - TZ=America/New_York
     volumes:
@@ -51,46 +51,50 @@ services:
       - postgres
     labels:
       - traefik.enable=true
-      - traefik.http.routers.n8n.rule=Host(`n8n.${MAIN_DOMAIN}`)
+      - traefik.http.routers.n8n.rule=Host(`${TAILSCALE_SUBDOMAIN}.${TAILSCALE_DOMAIN}`)
       - traefik.http.routers.n8n.entrypoints=websecure
       - traefik.http.routers.n8n.tls=true
-      - traefik.http.routers.n8n.tls.certresolver=letsencrypt
       - traefik.http.services.n8n.loadbalancer.server.port=5678
-      - traefik.http.routers.n8n.tls.domains[0].main=${MAIN_DOMAIN}
-      - traefik.http.routers.n8n.tls.domains[0].sans=*.${MAIN_DOMAIN}
-      # - traefik.http.middlewares.n8nmwr.headers.SSLRedirect=true
-      # - traefik.http.middlewares.n8nmwr.headers.STSSeconds=315360000
+      - traefik.http.middlewares.n8nmwr.headers.SSLRedirect=true
+      - traefik.http.middlewares.n8nmwr.headers.STSSeconds=315360000
       - traefik.http.middlewares.n8nmwr.headers.browserXSSFilter=true
       - traefik.http.middlewares.n8nmwr.headers.contentTypeNosniff=true
       - traefik.http.middlewares.n8nmwr.headers.forceSTSHeader=true
-      - traefik.http.middlewares.n8nmwr.headers.SSLHost=${MAIN_DOMAIN}
+      - traefik.http.middlewares.n8nmwr.headers.SSLHost=${TAILSCALE_DOMAIN}
       - traefik.http.middlewares.n8nmwr.headers.STSIncludeSubdomains=true
-      # - traefik.http.middlewares.n8nmwr.headers.STSPreload=true
+      - traefik.http.middlewares.n8nmwr.headers.STSPreload=true
       - traefik.http.routers.n8n.middlewares=n8nmwr@docker
     depends_on:
       postgres:
         condition: service_healthy
+    ports:
+      - 5678:5678
     networks:
       - default
       - traefiknet
   
-  # tailscale-n8n:
-  #   image: tailscale/tailscale:stable
-  #   hostname: tailscale-n8n
-  #   environment:
-  #     - TS_AUTHKEY=${TAILSCALE_AUTHKEY}
-  #     - TS_EXTRA_ARGS=--advertise-tags=tag:container
-  #     - TS_STATE_DIR=/var/lib/tailscale
-  #     - TS_USERSPACE=false
-  #     - TS_SERVE_CONFIG=/config/serve.json
-  #   volumes:
-  #     - ${PWD}/tailscale-n8n/state:/var/lib/tailscale
-  #     - /mnt/ssd/docker-configs/tailscale-n8n/config:/config
-  #   devices:
-  #     - /dev/net/tun:/dev/net/tun
-  #   networks:
-  #     - default
-  #     - traefiknet
-  #   cap_add:
-  #     - NET_ADMIN
-  #   restart: unless-stopped
+  tailscale-n8n:
+    image: tailscale/tailscale:stable
+    hostname: tailscale-n8n
+    environment:
+      - TS_AUTHKEY=${TAILSCALE_AUTHKEY}
+      - TS_EXTRA_ARGS=--advertise-tags=tag:container
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=false
+      # - TS_SERVE_CONFIG=/config/serve.json
+    volumes:
+      - /mnt/ssd/docker-configs/tailscale-n8n/state:/var/lib/tailscale
+      - /mnt/ssd/docker-configs/tailscale-n8n/config:/config
+    labels:
+      - traefik.http.routers.tailscale-n8n.rule=Path(`/metrics`)
+      - traefik.http.routers.tailscale-n8n.tls.certresolver=tsresolver
+      - traefik.http.routers.tailscale-n8n.tls.domains[0].main=${TAILSCALE_SUBDOMAIN}.${TAILSCALE_DOMAIN}
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    networks:
+      - default
+      - traefiknet
+    cap_add:
+      - net_admin
+      - sys_module
+    restart: unless-stopped
