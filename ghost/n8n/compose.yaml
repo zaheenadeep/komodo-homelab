@@ -91,7 +91,6 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     networks:
-      - default
       - traefiknet
     cap_add:
       - net_admin
