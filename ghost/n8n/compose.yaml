@@ -45,6 +45,7 @@ services:
       - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
       - N8N_GIT_NODE_DISABLE_BARE_REPOS=true
       - WEBHOOK_URL=https://${TAILSCALE_SUBDOMAIN}.${TAILSCALE_DOMAIN}/
+      - N8N_PROXY_HOPS=1
       - GENERIC_TIMEZONE=America/New_York
       - TZ=America/New_York
     volumes:
