@@ -22,6 +22,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    network_mode: service:tailscale-n8n
 
   n8n:
     image: docker.n8n.io/n8nio/n8n
@@ -49,29 +50,30 @@ services:
       - /mnt/ssd/docker-configs/n8n:/home/node/.n8n
     links:
       - postgres
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.n8n.rule=Host(`${TAILSCALE_SUBDOMAIN}.${TAILSCALE_DOMAIN}`)
-      - traefik.http.routers.n8n.entrypoints=websecure
-      - traefik.http.routers.n8n.tls=true
-      - traefik.http.services.n8n.loadbalancer.server.port=5678
-      - traefik.http.middlewares.n8nmwr.headers.SSLRedirect=true
-      - traefik.http.middlewares.n8nmwr.headers.STSSeconds=315360000
-      - traefik.http.middlewares.n8nmwr.headers.browserXSSFilter=true
-      - traefik.http.middlewares.n8nmwr.headers.contentTypeNosniff=true
-      - traefik.http.middlewares.n8nmwr.headers.forceSTSHeader=true
-      - traefik.http.middlewares.n8nmwr.headers.SSLHost=${TAILSCALE_DOMAIN}
-      - traefik.http.middlewares.n8nmwr.headers.STSIncludeSubdomains=true
-      - traefik.http.middlewares.n8nmwr.headers.STSPreload=true
-      - traefik.http.routers.n8n.middlewares=n8nmwr@docker
+    # labels:
+    #   - traefik.enable=true
+    #   - traefik.http.routers.n8n.rule=Host(`${TAILSCALE_SUBDOMAIN}.${TAILSCALE_DOMAIN}`)
+    #   - traefik.http.routers.n8n.entrypoints=websecure
+    #   - traefik.http.routers.n8n.tls=true
+    #   - traefik.http.services.n8n.loadbalancer.server.port=5678
+    #   - traefik.http.middlewares.n8nmwr.headers.SSLRedirect=true
+    #   - traefik.http.middlewares.n8nmwr.headers.STSSeconds=315360000
+    #   - traefik.http.middlewares.n8nmwr.headers.browserXSSFilter=true
+    #   - traefik.http.middlewares.n8nmwr.headers.contentTypeNosniff=true
+    #   - traefik.http.middlewares.n8nmwr.headers.forceSTSHeader=true
+    #   - traefik.http.middlewares.n8nmwr.headers.SSLHost=${TAILSCALE_DOMAIN}
+    #   - traefik.http.middlewares.n8nmwr.headers.STSIncludeSubdomains=true
+    #   - traefik.http.middlewares.n8nmwr.headers.STSPreload=true
+    #   - traefik.http.routers.n8n.middlewares=n8nmwr@docker
     depends_on:
       postgres:
         condition: service_healthy
     ports:
       - 5678:5678
-    networks:
-      - default
-      - traefiknet
+    network_mode: service:tailscale-n8n
+    # networks:
+    #   - default
+    #   - traefiknet
   
   tailscale-n8n:
     image: tailscale/tailscale:stable
@@ -90,8 +92,9 @@ services:
       - traefik.http.routers.tailscale-n8n.tls.domains[0].main=${TAILSCALE_SUBDOMAIN}.${TAILSCALE_DOMAIN}
     devices:
       - /dev/net/tun:/dev/net/tun
-    network_mode: host
     cap_add:
       - net_admin
-      - sys_module
+      # - sys_module
+    networks:
+      - traefiknet
     restart: unless-stopped
