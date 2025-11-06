@@ -66,8 +66,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    ports:
-      - 5678:5678
+    # ports:
+    #   - 5678:5678
     network_mode: service:tailscale-n8n
     # networks:
     #   - default
