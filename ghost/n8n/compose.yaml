@@ -86,7 +86,6 @@ services:
       - /mnt/ssd/docker-configs/tailscale-n8n/state:/var/lib/tailscale
       - /mnt/ssd/docker-configs/tailscale-n8n/config:/config
     labels:
-      - traefik.http.routers.tailscale-n8n.rule=Path(`/metrics`)
       - traefik.http.routers.tailscale-n8n.tls.certresolver=tsresolver
       - traefik.http.routers.tailscale-n8n.tls.domains[0].main=${TAILSCALE_SUBDOMAIN}.${TAILSCALE_DOMAIN}
     devices:
