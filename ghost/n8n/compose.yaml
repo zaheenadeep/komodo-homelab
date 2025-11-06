@@ -48,6 +48,13 @@ services:
       - N8N_PROXY_HOPS=1
       - GENERIC_TIMEZONE=America/New_York
       - TZ=America/New_York
+      # SMTP
+      - N8N_EMAIL_MODE=${N8N_EMAIL_MODE}
+      - N8N_SMTP_HOST=${N8N_SMTP_HOST}
+      - N8N_SMTP_USER=${N8N_SMTP_USER}
+      - N8N_SMTP_PASS=${N8N_SMTP_PASS}
+      - N8N_SMTP_STARTTLS=true
+      - N8N_MFA_ENABLED=true
     volumes:
       - /mnt/ssd/docker-configs/n8n:/home/node/.n8n
     depends_on:
