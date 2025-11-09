@@ -8,8 +8,8 @@ services:
       - TS_EXTRA_ARGS=--advertise-exit-node --accept-routes
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_USERSPACE=false
-    env_file:
-      - .env
+      - TS_AUTHKEY
+      - TS_ROUTES
     volumes:
       - ${PWD}/tailscale/state:/var/lib/tailscale
     devices:
