@@ -1,10 +1,21 @@
 services:
   mqtt:
-    image: eclipse-mosquitto:2
+    image: eclipse-mosquitto:2.0
     command: mosquitto -c /mosquitto-no-auth.conf
     restart: unless-stopped
     ports:
       - 1883:1883
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    image: ghcr.io/koenkk/zigbee2mqtt:2.7
+    restart: unless-stopped
+    volumes:
+      - /mnt/ssd/docker-configs/zigbee2mqtt/data:/app/data
+      - /run/udev:/run/udev:ro
+    ports:
+      - 8080:8080  # Frontend port
+    environment:
+      - TZ=America/New_York
   homeassistant:
     container_name: homeassistant
     image: "ghcr.io/home-assistant/home-assistant:stable"
