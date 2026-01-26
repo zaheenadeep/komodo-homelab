@@ -1,4 +1,10 @@
 services:
+  mqtt:
+    image: eclipse-mosquitto:2
+    command: mosquitto -c /mosquitto-no-auth.conf
+    restart: unless-stopped
+    ports:
+      - 1883:1883
   homeassistant:
     container_name: homeassistant
     image: "ghcr.io/home-assistant/home-assistant:stable"
