@@ -1,9 +1,8 @@
 services:
-  # <media_service> is used to serve your media to the client devices
-  <media_service>:
-    image: lscr.io/linuxserver/${MEDIA_SERVICE}
-    container_name: ${MEDIA_SERVICE}
-    #network_mode: host # plex
+  # jellyfin is used to serve your media to the client devices
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin
+    container_name: jellyfin
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -11,7 +10,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${MEDIA_DIRECTORY}:/data
-      - ${INSTALL_DIRECTORY}/config/${MEDIA_SERVICE}:/config
+      - ${INSTALL_DIRECTORY}/config/jellyfin:/config
     ports: # plex
       - 8096:8096 # plex
     restart: unless-stopped
