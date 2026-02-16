@@ -6,7 +6,6 @@ services:
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
-      - VERSION=docker
       - JELLYFIN_PublishedServerUrl=${JELLYFIN_PublishedServerUrl}
     volumes:
       - /etc/localtime:/etc/localtime:ro
