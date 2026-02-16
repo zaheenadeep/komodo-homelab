@@ -7,12 +7,15 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - VERSION=docker
+      - JELLYFIN_PublishedServerUrl=${JELLYFIN_PublishedServerUrl}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${MEDIA_DIRECTORY}:/data
       - ${INSTALL_DIRECTORY}/config/jellyfin:/config
-    ports: # plex
-      - 8096:8096 # plex
+    ports:
+      - 8096:8096
+      - 7359:7359/udp #optional
+      - 1900:1900/udp #optional
     restart: unless-stopped
 
   # qBitorrent is used to download torrents
