@@ -18,21 +18,27 @@ services:
       - 1900:1900/udp #optional
     restart: unless-stopped
 
-  # qBitorrent is used to download torrents
-  qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent:4.6.3
-    container_name: qbittorrent
+  # transmission is used to download torrents
+  transmission:
+    image: lscr.io/linuxserver/transmission:4.1.0
+    container_name: transmission
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
-      - WEBUI_PORT=8081
+      - USER=${WEBAPP_USER}
+      - PASS=${WEBAPP_PASS}
+      - WHITELIST= #optional
+      - PEERPORT= #optional
+      - HOST_WHITELIST= #optional
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${MEDIA_DIRECTORY}:/data
       - ${INSTALL_DIRECTORY}/config/qbittorrent:/config
     restart: unless-stopped
-    ports: # qbittorrent
-      - 8081:8081 # qbittorrent
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
     #network_mode: "service:gluetun"
 
   # SABnzbd is used to download from usenet
