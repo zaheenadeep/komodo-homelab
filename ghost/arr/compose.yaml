@@ -26,13 +26,10 @@ services:
       - PGID=${PGID}
       - USER=${WEBAPP_USER}
       - PASS=${WEBAPP_PASS}
-      - WHITELIST= #optional
-      - PEERPORT= #optional
-      - HOST_WHITELIST= #optional
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${MEDIA_DIRECTORY}:/data
-      - ${INSTALL_DIRECTORY}/config/qbittorrent:/config
+      - ${MEDIA_DIRECTORY}:/downloads
+      - ${INSTALL_DIRECTORY}/config/transmission:/config
     restart: unless-stopped
     ports:
       - 9091:9091
