@@ -19,7 +19,7 @@ services:
 
   # transmission is used to download torrents
   transmission:
-    image: lscr.io/linuxserver/transmission
+    image: lscr.io/linuxserver/transmission:4.1.0
     container_name: transmission
     environment:
       - PUID=${PUID}
