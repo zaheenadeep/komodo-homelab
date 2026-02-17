@@ -133,7 +133,7 @@ services:
 
   # Gluetun is our VPN, so you can download torrents safely
   gluetun:
-    image: qmcgaw/gluetun:v3.40.0
+    image: qmcgaw/gluetun:v3.40.2
     container_name: gluetun
     cap_add:
       - NET_ADMIN
