@@ -19,7 +19,7 @@ services:
 
   # transmission is used to download torrents
   transmission:
-    image: lscr.io/linuxserver/transmission:4.1.0
+    image: lscr.io/linuxserver/transmission
     container_name: transmission
     environment:
       - PUID=${PUID}
@@ -35,24 +35,7 @@ services:
       - 9091:9091
       - 51413:51413
       - 51413:51413/udp
-    #network_mode: "service:gluetun"
-
-  # SABnzbd is used to download from usenet
-  sabnzbd:
-    image: lscr.io/linuxserver/sabnzbd:latest
-    container_name: sabnzbd
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=America/Montevideo
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${MEDIA_DIRECTORY}:/data
-      - ${INSTALL_DIRECTORY}/config/sabnzbd:/config
-    ports: # sabnzbd
-      - 8080:8080 # sabnzbd
-    restart: unless-stopped
-    #network_mode: "service:gluetun"
+    network_mode: "service:gluetun"
 
   # Sonarr is used to query, add downloads to the download queue and index TV shows
   # https://sonarr.tv/
