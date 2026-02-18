@@ -1,6 +1,6 @@
 services:
   pihole:
-    container_name: pihole
+    container_name: ns01
     image: pihole/pihole:latest
     ports:
       # DNS Ports
@@ -19,3 +19,13 @@ services:
     cap_add:
       - SYS_NICE
     restart: unless-stopped
+
+  nebula-sync:
+    image: ghcr.io/lovelaze/nebula-sync:latest
+    container_name: nebula-sync
+    environment:
+    - PRIMARY=${PRIMARY}
+    - REPLICAS=http://ns01|${FTLCONF_webserver_api_password}
+    - FULL_SYNC=true
+    - RUN_GRAVITY=true
+    - CRON=0 * * * *
