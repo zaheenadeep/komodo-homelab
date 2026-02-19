@@ -12,8 +12,6 @@ services:
       - "3443:443/tcp"
     environment:
       TZ: ${TZ}
-      FTLCONF_webserver_api_password: ${FTLCONF_webserver_api_password}
-      FTLCONF_dns_listeningMode: 'ALL'
     volumes:
       - '/mnt/ssd/docker-configs/pihole/etc-pihole:/etc/pihole'
     cap_add:
