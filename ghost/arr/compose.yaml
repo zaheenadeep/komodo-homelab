@@ -31,10 +31,6 @@ services:
       - ${MEDIA_DIRECTORY}:/downloads
       - ${INSTALL_DIRECTORY}/config/transmission:/config
     restart: unless-stopped
-    ports:
-      - 9091:9091
-      - 51413:51413
-      - 51413:51413/udp
     network_mode: "service:gluetun"
 
   # Sonarr is used to query, add downloads to the download queue and index TV shows
@@ -146,6 +142,10 @@ services:
       - 8003:8000/tcp # Admin
       #- 8080:8080/tcp # gluetun
       #- 8081:8081/tcp # gluetun
+      # transmission ports
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
     environment:
       - VPN_SERVICE_PROVIDER=${VPN_SERVICE}
       - VPN_TYPE=wireguard
