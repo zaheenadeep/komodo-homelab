@@ -28,7 +28,7 @@ services:
       - PASS=${WEBAPP_PASS}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${MEDIA_DIRECTORY}:/downloads
+      - ${MEDIA_DIRECTORY}/downloads/torrents:/data/downloads/torrents
       - ${INSTALL_DIRECTORY}/config/transmission:/config
     restart: unless-stopped
     network_mode: "service:gluetun"
