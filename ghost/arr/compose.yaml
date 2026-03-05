@@ -169,6 +169,9 @@ services:
       - ${MEDIA_DIRECTORY}:/data
     restart: unless-stopped
     user: ${PUID}:${PGID}
+  networks:
+      arr_network:
+        ipv4_address: 172.60.0.19
 
 networks:
   arr_network:
