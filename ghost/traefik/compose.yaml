@@ -39,6 +39,7 @@ services:
       - traefik:/certs
     env_file:
       - .env
+    restart: unless-stopped
 
   whoami:
     image: "traefik/whoami"
