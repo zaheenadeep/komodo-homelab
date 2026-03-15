@@ -171,6 +171,7 @@ services:
       - UN_RADARR_0_URL=http://radarr:7878
       - UN_RADARR_0_API_KEY=${UN_RADARR_0_API_KEY}
       - UN_FOLDER_0_PATH=/data/downloads/torrents
+      - UN_FOLDER_0_EXTRACT_PATH=/data/downloads/torrents/extracted
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${MEDIA_DIRECTORY}:/data
