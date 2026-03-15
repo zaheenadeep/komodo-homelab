@@ -170,6 +170,7 @@ services:
       - UN_SONARR_0_API_KEY=${UN_SONARR_0_API_KEY}
       - UN_RADARR_0_URL=http://radarr:7878
       - UN_RADARR_0_API_KEY=${UN_RADARR_0_API_KEY}
+      - UN_FOLDER_0_PATH=/data/torrents
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${MEDIA_DIRECTORY}:/data
