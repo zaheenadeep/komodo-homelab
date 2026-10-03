@@ -8,7 +8,7 @@ services:
       - 1883:1883
   zigbee2mqtt:
     container_name: zigbee2mqtt
-    image: ghcr.io/koenkk/zigbee2mqtt:2.7
+    image: ghcr.io/koenkk/zigbee2mqtt:2
     restart: unless-stopped
     volumes:
       - /mnt/ssd/docker-configs/zigbee2mqtt/data:/app/data
