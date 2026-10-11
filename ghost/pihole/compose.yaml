@@ -13,6 +13,7 @@ services:
     environment:
       TZ: ${TZ}
       FTLCONF_webserver_api_password: ${FTLCONF_webserver_api_password}
+      FTLCONF_dns_listeningMode: 'all'
     volumes:
       - '/mnt/ssd/docker-configs/pihole/etc-pihole:/etc/pihole'
     cap_add:
